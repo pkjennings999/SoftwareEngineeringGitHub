@@ -1,6 +1,7 @@
 ﻿using Octokit;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web.Http;
 
@@ -24,7 +25,7 @@ namespace GitHubWebProject.Controllers
 
         [HttpGet]
         [Route("api/issues/url")]
-        public Dictionary<DateTime, int> GetAllIssues(string repoUrl)
+        public (List<KeyValuePair<DateTime, int>>, string) GetAllIssues(string repoUrl)
         {
             if (issuesclient == null)
             {
@@ -34,12 +35,6 @@ namespace GitHubWebProject.Controllers
             string user = Regex.Split(repoUrl, "/")[0];
             string repo = Regex.Split(repoUrl, "/")[1];
             var allissues = issuesclient.GetAllForRepository(user, repo, getAll).GetAwaiter().GetResult();
-            //ProjectIssue[] issues = new ProjectIssue[allissues.Count];
-            //int i = 0;
-            //foreach (Issue issue in allissues)
-            //{
-            //    issues[i++] = new ProjectIssue { Number = issue.Number, CreatedAt = issue.CreatedAt };
-            //}
 
             Dictionary<DateTime, int> dict = new Dictionary<DateTime, int>();
             foreach (Issue issue in allissues)
@@ -63,20 +58,22 @@ namespace GitHubWebProject.Controllers
                     created = created.AddDays(1);
                 }
             }
+            var myList = dict.ToList();
 
-            return dict;
+            myList.Sort((pair1, pair2) => pair1.Key.CompareTo(pair2.Key));
+            DateTime first = myList.ElementAt(0).Key;
+
+            while (first <= DateTime.Now)
+            {
+                if (!dict.ContainsKey(first))
+                {
+                    myList.Add(new KeyValuePair<DateTime, int>(first, 0));
+                }
+                first = first.AddDays(1);
+            }
+            myList.Sort((pair1, pair2) => pair1.Key.CompareTo(pair2.Key));
+
+            return (myList, repo);
         }
-
-        //[HttpGet]
-        //[Route("api/issues/{id}")]
-        //public IHttpActionResult GetIssue(int id)
-        //{
-        //    //var issue = issues.FirstOrDefault((p) => p.Id == id);
-        //    //if (issue == null)
-        //    //{
-        //    //    return NotFound();
-        //    //}
-        //    return Ok(issue);
-        //}
     }
 }
