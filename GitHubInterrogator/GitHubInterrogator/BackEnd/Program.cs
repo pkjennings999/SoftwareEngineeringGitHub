@@ -17,7 +17,7 @@ namespace GitHubVisualisation.BackEnd.Program
                 State = ItemStateFilter.All
             };
 
-            var allissues = issuesclient.GetAllForRepository("swharden", "ScottPlot", getAll).GetAwaiter().GetResult();
+            var allissues = issuesclient.GetAllForRepository("torvalds", "linux", getAll).GetAwaiter().GetResult();
             Console.WriteLine("Got stats");
 
             Dictionary<DateTime, int> dict = new Dictionary<DateTime, int>();
@@ -47,7 +47,7 @@ namespace GitHubVisualisation.BackEnd.Program
             //issue.Number();
             foreach (var i in dict)
             {
-
+                Console.WriteLine("[\"" + i.Key.Month + "/" + i.Key.Day + "/" + i.Key.Year + "\", " + i.Value + "],");
             }
             int x = 0;
 
