@@ -18,8 +18,9 @@ namespace GitHubWebProject.Controllers
 
         private void Setup()
         {
-            client = new GitHubClient(new Octokit.ProductHeaderValue("octokit.samples"));
-            client.Credentials = new Credentials("f12ceda8615af3fb4f70b5255fb4326adf23e185");
+            client = new GitHubClient(new Octokit.ProductHeaderValue("GitHubDataVisProject"));
+            // Uncomment and add in your OAuth Token
+            //client.Credentials = new Credentials(OAuth Token);
             issuesclient = client.Issue;
         }
 
