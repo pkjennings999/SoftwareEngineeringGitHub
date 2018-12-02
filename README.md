@@ -13,7 +13,9 @@ Clone the repository and edit the file IssuesController.cs to include your OAuth
 When the program is run, it will be located at http://localhost:15103/ by default.
 
 Find a repository url, like https://github.com/github-tools/github, and enter it into the search bar.
+
 ![alt text](https://github.com/pkjennings999/SoftwareEngineeringGitHub/blob/master/Images/Search.png "Search")
+
 Then click search.
 
 
